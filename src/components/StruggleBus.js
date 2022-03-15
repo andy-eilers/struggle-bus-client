@@ -7,7 +7,7 @@ import { Register } from "./auth/Register"
 import "./StruggleBus.css"
 
 
-export const StruggleBus = () => {
+export const StruggleBus = () => (
     <>
         <Route render={() => {
             if (localStorage.getItem("sb_token")) {
@@ -31,4 +31,4 @@ export const StruggleBus = () => {
         </Route>
 
     </>
-}
+)

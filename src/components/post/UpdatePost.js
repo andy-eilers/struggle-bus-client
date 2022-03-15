@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react"
-import { useHistory } from "react-router-dom"
-import { createPost, getBusses, getStruggles } from "./PostManager.js"
+import { useHistory, useParams } from "react-router-dom"
+import { getPostById, updatePost, getBusses, getStruggles } from "./PostManager.js"
 
-export const PostForm = () => {
+export const UpdatePost = () => {
     const history = useHistory()
-    const[busses, setBus] = useState([])
+    const [busses, setBus] = useState([])
     const [struggles, setStruggles] = useState([])
+    const { postId } = useParams()
 
     const [currentPost, setCurrentPost] = useState({
         rider: "",
@@ -15,16 +16,21 @@ export const PostForm = () => {
         date: "",
         struggles: []
     })
-    
-    useEffect(() => {
-        getBusses().then(busses => setBus(busses))
-    }, [])
 
     useEffect(() => {
-        getStruggles().then(struggles => setStruggles(struggles))
-    }, [])
+        getPostById(postId).then(postData => setCurrentPost({
+            rider: postData.rider,
+            title: postData.title,
+            bus: postData.bus,
+            description: postData.description,
+            date: postData.date,
+            struggle: postData.struggle,
+        }))
+            .then(getBusses().then(data => setBus(data)))
+            .then(getStruggles().then(data => setStruggles(data)))
+    }, [postId])
 
-    const changePostState = (domEvent) => {
+    const changeUpdatedPost = (domEvent) => {
         domEvent.preventDefault()
         const copy = { ...currentPost }
         let key = domEvent.target.name
@@ -32,24 +38,24 @@ export const PostForm = () => {
         setCurrentPost(copy)
     }
 
-    return(
-        <form className="postForm">
-            <h1 className="postForm__title">What's Your Struggle</h1>
+    return (
+        <form className="updateForm">
+            <h2 className="updateForm__title">Edit Your Struggle</h2>
             <fieldset>
                 <div className="form-group">
                     <label htmlFor="title">Title: </label>
                     <input type="text" name="title" required autoFocus className="form-control"
-                        value={currentPost.title}
-                        onChange={changePostState}
-                    />
-                </div>    
+                    value={currentPost.title}
+                    onChange={changeUpdatedPost} 
+                    />   
+                </div>
             </fieldset>
             <fieldset>
                 <div className="form-group">
-                    <label htmlFor="Bus">Bus Size: </label>
+                    <label htmlFor="bus">Bus Size: </label>
                     <select name="bus" required autoFocus className="form-control"
                         value={currentPost.bus}
-                        onChange={changePostState}>
+                        onChange={changeUpdatedPost}>
                         <option value="0"> Select a Bus</option>
                         {
                             busses.map(bus => (
@@ -63,21 +69,20 @@ export const PostForm = () => {
             </fieldset>
             <fieldset>
                 <div className="form-group">
-                    <label htmlFor="description">Tell Us About It: </label>
+                    <label htmlFor="description">Description: </label>
                     <input type="text" name="description" required autoFocus className="form-control"
-                        value={currentPost.description}
-                        onChange={changePostState}
-                        placeholder="Just let it all out"
-                    />
+                    value={currentPost.description}
+                    onChange={changeUpdatedPost} 
+                    />   
                 </div>
             </fieldset>
             <fieldset>
                 <div className="form-group">
-                    <label htmlFor="date">Date (0000-00-00): </label>
-                    <input Type="text" name="date" required autoFocus className="form-control"
-                        value={currentPost.date}
-                        onChange={changePostState}
-                    />
+                    <label htmlFor="date">Date: </label>
+                    <input type="text" name="date" required autoFocus className="form-control"
+                    value={currentPost.date}
+                    onChange={changeUpdatedPost} 
+                    />   
                 </div>
             </fieldset>
             <fieldset>
@@ -85,7 +90,7 @@ export const PostForm = () => {
                     <label htmlFor="struggle">Struggle: </label>
                     <select name="struggle" required autoFocus className="form-control"
                         value={currentPost.struggle}
-                        onChange={changePostState}>
+                        onChange={changeUpdatedPost}>
                         <option value="0">Select Your Struggles</option>
                         {
                             struggles.map(struggle => (
@@ -97,24 +102,26 @@ export const PostForm = () => {
                     </select>
                 </div>
             </fieldset>
-
             <button type="submit"
                 onClick={evt => {
                     evt.preventDefault()
 
                     const post = {
-                        rider: currentPost.rider,
+                        rider: currentPost.rider.id,
                         title: currentPost.title,
                         bus: currentPost.bus,
                         description: currentPost.description,
                         date: currentPost.date,
-                        struggle: currentPost.struggle,
+                        struggle: currentPost.struggle
                     }
 
-                    createPost(post)
+                    updatePost(post, postId)
                         .then(() => history.push("/posts"))
                 }}
-                className="btn btn-dataprimary">Hop On The Bus</button>    
+                className="btn btn-primary">Save Struggle</button>
+            <button type="cancel" onClick={() => {
+                history.push("/posts")
+            }}>Cancel</button>        
         </form>
     )
 }

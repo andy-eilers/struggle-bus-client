@@ -11,7 +11,7 @@ export const UpdatePost = () => {
     const [currentPost, setCurrentPost] = useState({
         rider: "",
         title: "",
-        bus: 0,
+        bus: {id: 0, label: ""},
         description: "",
         date: "",
         struggles: []
@@ -32,9 +32,10 @@ export const UpdatePost = () => {
 
     const changeUpdatedPost = (domEvent) => {
         domEvent.preventDefault()
+
         const copy = { ...currentPost }
         let key = domEvent.target.name
-        copy[key] = domEvent.target.value
+        copy[key] = domEvent.target.value      
         setCurrentPost(copy)
     }
 
@@ -45,18 +46,18 @@ export const UpdatePost = () => {
                 <div className="form-group">
                     <label htmlFor="title">Title: </label>
                     <input type="text" name="title" required autoFocus className="form-control"
-                    value={currentPost.title}
-                    onChange={changeUpdatedPost} 
-                    />   
+                        value={currentPost.title}
+                        onChange={changeUpdatedPost}
+                    />
                 </div>
             </fieldset>
             <fieldset>
                 <div className="form-group">
                     <label htmlFor="bus">Bus Size: </label>
                     <select name="bus" required autoFocus className="form-control"
-                        value={currentPost.bus}
+                        value={currentPost.bus.id}
                         onChange={changeUpdatedPost}>
-                        <option value="0"> Select a Bus</option>
+                        <option value="0">Select a Bus</option>
                         {
                             busses.map(bus => (
                                 <option key={bus.id} value={bus.id}>
@@ -71,18 +72,18 @@ export const UpdatePost = () => {
                 <div className="form-group">
                     <label htmlFor="description">Description: </label>
                     <input type="text" name="description" required autoFocus className="form-control"
-                    value={currentPost.description}
-                    onChange={changeUpdatedPost} 
-                    />   
+                        value={currentPost.description}
+                        onChange={changeUpdatedPost}
+                    />
                 </div>
             </fieldset>
             <fieldset>
                 <div className="form-group">
                     <label htmlFor="date">Date: </label>
                     <input type="text" name="date" required autoFocus className="form-control"
-                    value={currentPost.date}
-                    onChange={changeUpdatedPost} 
-                    />   
+                        value={currentPost.date}
+                        onChange={changeUpdatedPost}
+                    />
                 </div>
             </fieldset>
             <fieldset>
@@ -121,7 +122,7 @@ export const UpdatePost = () => {
                 className="btn btn-primary">Save Struggle</button>
             <button type="cancel" onClick={() => {
                 history.push("/posts")
-            }}>Cancel</button>        
+            }}>Cancel</button>
         </form>
     )
 }

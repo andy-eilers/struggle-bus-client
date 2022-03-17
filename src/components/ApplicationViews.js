@@ -4,13 +4,15 @@ import { BusList } from "./bus/BusList.js"
 import { PostList } from "./post/PostList.js"
 import { PostForm } from "./post/PostForm.js"
 import { UpdatePost } from "./post/UpdatePost.js"
+import { RiderProfile } from "./rider/RiderProfile.js"
+import { UpdateRider } from "./rider/UpdateRider.js"
 
 
 export const ApplicationViews = () => {
     return <>
         <main style={{
             margin: "5rem 2rem",
-            backgroundColor: "slategray"
+            backgroundColor: "lightgray"
         }}>
             <Route exact path="/busses">
                 <BusList />
@@ -27,6 +29,14 @@ export const ApplicationViews = () => {
 
             <Route exact path="/posts/:postId(\d+)/update">
                 <UpdatePost />
+            </Route>
+
+            <Route exact path="/riders/:riderId(\d+)">
+                <RiderProfile />
+            </Route>
+
+            <Route exact path="/riders/:riderId(\d+)/update">
+                <UpdateRider />
             </Route>
         </main>
     </>

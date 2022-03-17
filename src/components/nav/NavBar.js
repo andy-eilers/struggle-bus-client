@@ -4,13 +4,14 @@ import "./NavBar.css"
 
 export const NavBar = () => {
     const history = useHistory()
+    const riderId = localStorage.getItem("userId")
     return (
         <ul className="navbar">
             <li className="navbar__item">
                 <Link className="nav-link" to="/posts">Bus Stop</Link>    
             </li>
             <li className="navbar__item">
-                <Link className="nav-link" to="/riders">User Profile</Link>
+                <Link className="nav-link" to={`/riders/${riderId}`}>Rider Profile</Link>
             </li>
             <li className="navbar__item">
                 <Link className="nav-link" to="/busses">Busses</Link>

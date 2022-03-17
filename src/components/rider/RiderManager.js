@@ -29,11 +29,11 @@ export const deleteRider = (rider, id) => {
   }
 
   export const updateRider = (rider, id) => {
-      return fetch(`http://localhost:8000/riders${id},`, {
+      return fetch(`http://localhost:8000/riders/${id}`, {
           method: "PUT",
           headers: {
               "Authorization": `Token ${localStorage.getItem("sb_token")}`,
-              "Content_Type": "application/json"
+              "Content-Type": "application/json"
           },
           body: JSON.stringify(rider)
       })

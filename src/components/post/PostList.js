@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { useHistory } from "react-router-dom"
+import { useHistory, Link } from "react-router-dom"
 import { getPosts, deletePost } from "./PostManager.js"
 
 export const PostList = () => {
@@ -19,7 +19,7 @@ export const PostList = () => {
                 {
                     posts.map(post => {
                         return <section key={`post--${post.id}`} className="post">
-                            <div className="post__rider">Who's Struggling? {post.rider.user?.username}</div>
+                            <div className="post__rider">Who's Struggling? <Link to={`/riders/${post.rider.id}`}>{post.rider.user?.username}</Link></div>
                             <div className="post__title">Hop On: {post.title}</div>                        
                             <div className="post__bus">Bus Size: {post.bus?.label}</div>                            
                             <div className="post__description">Here's The Struggle: {post.description}</div>

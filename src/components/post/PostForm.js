@@ -105,7 +105,7 @@ export const PostForm = () => {
                     const post = {
                         rider: currentPost.rider,
                         title: currentPost.title,
-                        bus: currentPost.bus,
+                        bus: parseInt(currentPost.bus),
                         description: currentPost.description,
                         date: currentPost.date,
                         struggle: currentPost.struggle,

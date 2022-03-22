@@ -16,10 +16,10 @@ export const UpdateRider = () => {
 
     useEffect(() => {
         getRiderById(riderId).then(riderData => setCurrentRiderProfile({
-            username: riderData.username,
-            firstName: riderData.firstName,
-            lastName: riderData.lastName,
-            email: riderData.email,
+            username: riderData.user.username,
+            firstName: riderData.user.first_name,
+            lastName: riderData.user.last_name,
+            email: riderData.user.email,
             bio: riderData.bio
         }))
     }, [riderId])
@@ -85,15 +85,15 @@ export const UpdateRider = () => {
                     evt.preventDefault()
 
                     const rider = {
-                        username: currentRiderProfile.user?.username,
-                        firstName: currentRiderProfile.user?.firstName,
-                        lastName: currentRiderProfile.user?.lastName,
-                        email: currentRiderProfile.user?.email,
+                        username: currentRiderProfile.username,
+                        first_name: currentRiderProfile.firstName,
+                        last_name: currentRiderProfile.lastName,
+                        email: currentRiderProfile.email,
                         bio: currentRiderProfile.bio
                     }
 
                     updateRider(rider, riderId)
-                        .then(() => history.push("/riders/:riderId(\d+)"))
+                        .then(() => history.push(`/riders/${riderId}`))
                 }}
                 className="btn btn-primary">Save Rider</button>
             <button type="cancel" onClick={() => {

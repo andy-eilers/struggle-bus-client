@@ -4,8 +4,9 @@ import { createPost, getBusses, getStruggles } from "./PostManager.js"
 
 export const PostForm = () => {
     const history = useHistory()
-    const[busses, setBus] = useState([])
+    const [busses, setBus] = useState([])
     const [struggles, setStruggles] = useState([])
+    const [selectedStruggles, setSelectedStruggles] = useState([])
 
     const [currentPost, setCurrentPost] = useState({
         rider: "",
@@ -27,9 +28,23 @@ export const PostForm = () => {
     const changePostState = (domEvent) => {
         domEvent.preventDefault()
         const copy = { ...currentPost }
-        let key = domEvent.target.name
-        copy[key] = domEvent.target.value
-        setCurrentPost(copy)
+        if (domEvent.target.name === "struggles") {
+            if (domEvent.target.checked === true){
+                const copystruggles = [ ...selectedStruggles ]
+                copystruggles.push(parseInt(domEvent.target.value))
+                setSelectedStruggles(copystruggles)
+            }else if (domEvent.target.checked === false){
+                const copystruggles = [ ...selectedStruggles ]
+                const struggleIndex = copystruggles. indexOf(parseInt(domEvent.target.value))
+                copystruggles.splice(struggleIndex, 1)
+                setSelectedStruggles(copystruggles)
+            }
+            }
+        else {
+            let key = domEvent.target.name
+            copy[key] = domEvent.target.value
+            setCurrentPost(copy)
+        }
     }
 
     return(
@@ -82,22 +97,21 @@ export const PostForm = () => {
             </fieldset>
             <fieldset>
                 <div className="form-group">
-                    <label htmlFor="struggle">Struggle: </label>
+                    <label htmlFor="struggle">Struggles: </label>
                     <select name="struggle" required autoFocus className="form-control"
                         value={currentPost.struggle}
                         onChange={changePostState}>
                         <option value="0">Select Your Struggles</option>
                         {
-                            struggles.map(struggle => (
-                                <option key={struggle.id} value={struggle.id}>
-                                    {struggle.label}
-                                </option>
-                            ))
+                            struggles.map(
+                                (struggle) => {
+                                return <option onChange={changePostState} name="struggles" key={`struggle--${struggle.id}`} value={struggle.id}>{struggle.label}</option>                                    
+                                
+                                })
                         }
                     </select>
                 </div>
             </fieldset>
-
             <button type="submit"
                 onClick={evt => {
                     evt.preventDefault()
@@ -108,7 +122,7 @@ export const PostForm = () => {
                         bus: parseInt(currentPost.bus),
                         description: currentPost.description,
                         date: currentPost.date,
-                        struggle: currentPost.struggle,
+                        struggles: currentPost.struggles,
                     }
 
                     createPost(post)

@@ -20,13 +20,10 @@ export const PostList = () => {
                     posts.map(post => {
                         return <section key={`post--${post.id}`} className="post">
                             <div className="post__rider">Who's Struggling? <Link to={`/riders/${post.rider.id}`}>{post.rider.user?.username}</Link></div>
-                            <div className="post__title">Hop On: {post.title}</div>                        
-                            <div className="post__bus">Bus Size: {post.bus?.label}</div>                            
-                            <div className="post__description">Here's The Struggle: {post.description}</div>
-                            <div className="post__date">Struggled On: {post.date}</div>
-                            <div className="post__struggle">Struggles: {post.struggle?.map(struggle => 
-                            {return struggle.label}).join('\n')} 
-                            </div>
+                            <div className="post__title">Hop On: <Link to={`/posts/${post.id}`}>{post.title}</Link></div>
+                            <div className="post__struggle">Struggles: {post.struggles?.map(struggle => {
+                                return struggle.label + (" ")
+                            })}</div>
                             <div className="button">
                                 {post.rider.user?.id === parseInt(localStorage.getItem("userId"))
                                 ?
@@ -39,10 +36,11 @@ export const PostList = () => {
                                 {post.rider.user?.id === parseInt(localStorage.getItem("userId"))
                                 ?
                                 <button onClick={() =>
-                                    deletePost(post.id)
+                                    deletePost(post.id).then(history.push("/comments/new"))
                                 }>Delete</button>
                                 : ""}
                             </div>
+                            
                         </section>
                     })
                 }                
